@@ -1,0 +1,36 @@
+#!/bin/bash
+#**************************************************
+# this file is prepared for port 443 and port 88  *
+#**************************************************
+while true
+do
+{
+	DATE=`date "+%y-%m-%d(%H:%M:%S)"`
+	#**********************************************
+	#use GREP to search for CLOSE_WAIT sentences  *
+	#RETURN_NUMBER record the value of that thing *
+	#**********************************************
+	RETURN_NUMBER=`lsof -i:88 | grep CLOSE_WAIT`
+        echo "当前时间是：${DATE}"
+        
+    #******************************************************************************
+    #if the value RETURN_NUMBER is null it means good                             *        
+    #if the value RETURN_NUMBER is not null ,it means the CLOSE_WAIT has appeared *
+    #******************************************************************************
+
+	if [ X"${RETURN_NUMBER}" = X ];
+	then
+	{
+		echo "目前88端口状况：正常！！！"
+
+	}
+	else
+	{
+		echo "目前88端口状况：出现CLOSE_WAIT!!!!!" >> 88.txt
+		echo "${RETURN_NUMBER}" >> 88.txt
+	}
+	fi
+	sleep 3
+}
+done
+
